@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Membros</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background-color: #1e22ff; /* Azul Escuro */
+      color: white; /* Texto branco para melhor legibilidade */
+      font-family: Arial, sans-serif; /* Fonte padrão */
+      line-height: 1.6; /* Altura da linha */
+      margin: 0; /* Remover margens padrão */
+      padding: 0; /* Remover preenchimentos padrão */
+    }
+
+    header {
+      background-color: #1e1e2e; /* Cor de fundo do cabeçalho */
+      color: white; /* Cor do texto do cabeçalho */
+      padding: 20px;
+    }
+
+    nav ul {
+      list-style: none; /* Remover marcadores de lista */
+      padding: 0; /* Remover preenchimento padrão */
+      margin: 0; /* Remover margem padrão */
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      color: #2600fd; /* Cor dos links do menu */
+      text-decoration: none; /* Remover sublinhado padrão dos links */
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    footer {
+      background-color: #1e1e2e; /* Cor de fundo do rodapé */
+      color: white; /* Cor do texto do rodapé */
+      padding: 20px;
+      position: relative; /* Para posicionamento absoluto da imagem */
+    }
+
+    .container {
+      max-width: 600px; /* Largura máxima do conteúdo do rodapé */
+      margin: 0 auto; /* Centralizar o conteúdo horizontalmente */
+    }
+
+    .footer-img {
+      position: absolute; /* Posicionamento absoluto dentro do rodapé */
+      bottom: 20px; /* Distância da parte inferior do rodapé */
+      left: 20px; /* Distância da parte esquerda do rodapé */
+      width: 50px; /* Largura da imagem */
+      height: auto; /* Altura automática para manter a proporção */
+    }
+
+    .login-container {
+      background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #0069fd; /* Cor do botão */
+      color: white; /* Cor do texto do botão */
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #00abc2; /* Cor do botão ao passar o mouse */
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Bem-vindo ao Gerenciamento de Membros</h1>
+  <nav>
+    <ul>
+      <li><a href="#">Login</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Ad Fama Itaipu</h2>
+    <p>Jesus Cristo é o único Senhor.</p>
+  </section>
+
+  <!-- Seção de Login -->
+  <section class="login-container">
+    <form id="login-form">
+      <h2>Login</h2>
+      <div class="form-group">
+        <label for="username">Usuário</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>© 2024 Gerenciamento de Membros.</p>
+</footer>
+
+
+<script>
+  const users = {
+    'Adm': 'Lecio123$',
+    'Pastor': '2024%',
+    'Lider': 'Jesus300#'
+  };
+
+  document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (users[username] && users[username] === password) {
+      alert('Login bem-sucedido!');
+      window.location.href = 'gerenciamento.html'; // Substitua pelo caminho correto da sua página de gerenciamento
+    } else {
+      alert('Usuário ou senha incorretos!');
+    }
+  });
+</script>
+
+</body>
+</html>
