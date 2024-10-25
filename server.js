@@ -13,24 +13,30 @@ const pool = new Pool({
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Para interpretar dados do formulário
 
 // Rota para adicionar um novo membro
 app.post('/add-member', async (req, res) => {
   const { name, number, address, group } = req.body;
 
-  // Verifica se o membro já existe
-  const existingMember = await pool.query('SELECT * FROM members WHERE name = $1 AND number = $2', [name, number]);
-  
-  if (existingMember.rows.length > 0) {
-    return res.status(400).json({ message: 'Membro já cadastrado!' });
-  }
+  try {
+    // Verifica se o membro já existe
+    const existingMember = await pool.query('SELECT * FROM members WHERE name = $1', [name]);
 
-  // Adiciona o novo membro
-  await pool.query('INSERT INTO members (name, number, address, group) VALUES ($1, $2, $3, $4)', [name, number, address, group]);
-  res.status(201).json({ message: 'Membro adicionado com sucesso!' });
+    if (existingMember.rows.length > 0) {
+      return res.status(400).json({ error: 'Membro já existe.' });
+    }
+
+    // Adiciona o novo membro
+    await pool.query('INSERT INTO members (name, number, address, group) VALUES ($1, $2, $3, $4)', [name, number, address, group]);
+    res.status(201).json({ message: 'Membro adicionado com sucesso!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao adicionar membro.' });
+  }
 });
 
-// Inicializa o servidor
+// Iniciar o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
