@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="manifest" href="manifest.json">
   <style>
+    /* Estilos de aparência */
     body {
       background-color: #1e22ff;
       color: white;
@@ -143,7 +144,15 @@
   <p>© 2024 Gerenciamento de Membros.</p>
 </footer>
 
-<script>
+<script type="module">
+  // Importando o cliente do Supabase
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // Inicializando o Supabase
+  const supabaseUrl = 'https://bsvhnbqbhcgtlebroalb.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzdmhuYnFiaGNndGxlYnJvYWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk4NjQxNzIsImV4cCI6MjA0NTQ0MDE3Mn0.PaFCnLbPdrWH-TA5JIJJFmb8CSfLKpvF4cpPR11u3J0';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
   // Função de autenticação
   const users = {
     'Adm': 'Lecio123$',
@@ -174,6 +183,20 @@
       .catch(error => {
         console.log('Falha ao registrar o Service Worker:', error);
       });
+  }
+
+  // Função para adicionar membros usando Supabase
+  async function addMember(memberData) {
+    try {
+      const { data, error } = await supabase
+        .from('members')
+        .insert([memberData]);
+
+      if (error) throw error;
+      console.log('Membro adicionado com sucesso:', data);
+    } catch (error) {
+      console.error('Erro ao adicionar membro:', error.message);
+    }
   }
 </script>
 
