@@ -116,212 +116,165 @@
     .add-menu button {
       padding: 0.5rem 1rem;
       background-color: #28a745;
-      color: #fff;
+      color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin: 0.5rem 0;
-      width: 100%;
     }
 
     .add-menu button:hover {
       background-color: #218838;
     }
 
-    .modal {
+    #modal {
       display: none;
       position: fixed;
-      left: 0;
       top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.5);
       justify-content: center;
       align-items: center;
     }
 
-    .modal-content {
-      background: #fff;
+    #modal-content {
+      background-color: #fff;
       padding: 2rem;
-      border-radius: 5px;
-      width: 80%;
-      max-width: 500px;
-      position: relative;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
     }
 
-    .modal-content h3 {
-      margin-top: 0;
+    #modal-content form {
+      display: flex;
+      flex-direction: column;
     }
 
-    .modal-content label {
-      display: block;
-      margin: 0.5rem 0;
+    #modal-content label {
+      margin: 0.5rem 0 0.2rem;
     }
 
-    .modal-content input,
-    .modal-content select {
-      width: 100%;
+    #modal-content input {
       padding: 0.5rem;
-      margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 5px;
-    }
-
-    .modal-content button {
-      padding: 0.5rem 1rem;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .modal-content button:hover {
-      background-color: #0062cc;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #dc3545;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .modal-close:hover {
-      background: #c82333;
-    }
-
-    .table-container {
-      margin-top: 2rem;
-    }
-
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .table th,
-    .table td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .table th {
-      background-color: #f2f2f2;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="logo.png" alt="Logo do Gerenciamento de Membros">
-      <h1>Gerenciamento de Membros</h1>
-    </div>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Configurações</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <div class="sidebar">
-      <h2>Menu</h2>
-      <ul>
-        <li><a href="#" onclick="showSection('membros')">Membros de Casa</a></li>
-        <li><a href="#" onclick="showSection('recemConvertidos')">Recém Convertidos</a></li>
-        <li><a href="#" onclick="showSection('jovens')">Jovens</a></li>
-        <li><a href="#" onclick="showSection('adolescentes')">Adolescentes</a></li>
-        <li><a href="#" onclick="showSection('ebd')">EBD</a></li>
-      </ul>
-    </div>
+<header>
+  <div class="logo">
+    <img src="logo.png" alt="Logo">
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#" onclick="openModal()">Adicionar Membro</a></li>
+    </ul>
+  </nav>
+</header>
 
-    <div class="content">
-      <h2 id="section-title">Seja bem-vindo</h2>
-      <div id="section-content">
-        <!-- Conteúdo será carregado dinamicamente -->
-      </div>
-
-      <div class="add-menu">
-        <button onclick="openModal('Novo Membro')">Novo Membro</button>
-        <button onclick="openModal('Novo Convertido')">Novo Convertido</button>
-        <button onclick="openModal('Novo Jovem')">Novo Jovem</button>
-        <button onclick="openModal('Novo Adolescente')">Novo Adolescente</button>
-        <button onclick="openModal('Novo EBD')">Novo EBD</button>
-      </div>
-      
-      <div class="table-container" id="table-container">
-        <!-- As tabelas de grupos serão carregadas dinamicamente aqui -->
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2024 Gerenciamento de Membros. Todos os direitos reservados.
-  </footer>
-
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">X</button>
-      <h3 id="modal-title">Adicionar Novo Membro</h3>
-      <form id="modal-form" action="/add-member" method="POST">
-        <label for="name">Nome:</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="number">Número:</label>
-        <input type="text" id="number" name="number" required>
-
-        <label for="address">Endereço:</label>
-        <input type="text" id="address" name="address" required>
-
-        <label for="group">Grupo:</label>
-        <select id="group" name="group" required>
-          <option value="membros">Membros de Casa</option>
-          <option value="recemConvertidos">Recém Convertidos</option>
-          <option value="jovens">Jovens</option>
-          <option value="adolescentes">Adolescentes</option>
-          <option value="ebd">EBD</option>
-        </select>
-
-        <button type="submit">Adicionar</button>
-      </form>
-    </div>
+<main>
+  <div class="sidebar">
+    <h2>Seções</h2>
+    <ul>
+      <li><a href="#" onclick="showSection('casa')">Membros de Casa</a></li>
+      <li><a href="#" onclick="showSection('recem_convertidos')">Recém Convertidos</a></li>
+      <li><a href="#" onclick="showSection('jovens')">Jovens</a></li>
+      <li><a href="#" onclick="showSection('adolescentes')">Adolescentes</a></li>
+      <li><a href="#" onclick="showSection('ebd')">Escola Bíblica (EBD)</a></li>
+    </ul>
   </div>
 
-  <script>
-    function showSection(section) {
-      document.getElementById('section-title').innerText = section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1');
-      // Aqui você pode carregar o conteúdo correspondente à seção
-    }
+  <div class="content">
+    <h2 id="section-title">Bem-vindo</h2>
+    <div id="section-content">Selecione uma seção para visualizar os membros.</div>
+  </div>
+</main>
 
-    function openModal(title) {
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal').style.display = 'flex';
-    }
+<footer>
+  <p>© 2024 Gerenciamento de Membros.</p>
+</footer>
 
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-      document.getElementById('modal-form').reset();
-    }
+<div id="modal">
+  <div id="modal-content">
+    <h2>Adicionar Novo Membro</h2>
+    <form id="modal-form">
+      <label for="name">Nome</label>
+      <input type="text" id="name" required>
+      <label for="number">Número</label>
+      <input type="text" id="number" required>
+      <label for="address">Endereço</label>
+      <input type="text" id="address" required>
+      <label for="group">Grupo</label>
+      <select id="group" required>
+        <option value="casa">Membro de Casa</option>
+        <option value="recem_convertidos">Recém Convertidos</option>
+        <option value="jovens">Jovens</option>
+        <option value="adolescentes">Adolescentes</option>
+        <option value="ebd">Escola Bíblica (EBD)</option>
+      </select>
+      <button type="submit">Adicionar Membro</button>
+    </form>
+    <button onclick="closeModal()">Fechar</button>
+  </div>
+</div>
 
-    // Fechar o modal ao clicar fora dele
-    window.onclick = function(event) {
-      if (event.target === document.getElementById('modal')) {
-        closeModal();
-      }
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const supabaseUrl = 'https://bsvhnbqbhcgtlebroalb.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzdmhuYnFiaGNndGxlYnJvYWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk4NjQxNzIsImV4cCI6MjA0NTQ0MDE3Mn0.PaFCnLbPdrWH-TA5JIJJFmb8CSfLKpvF4cpPR11u3J0';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  async function addMemberToDatabase(event) {
+    event.preventDefault();
+
+    const memberData = {
+      name: document.getElementById('name').value,
+      number: document.getElementById('number').value,
+      address: document.getElementById('address').value,
+      group: document.getElementById('group').value
+    };
+
+    const { data, error } = await supabase.from('members').insert([memberData]);
+
+    if (error) {
+      alert('Erro ao adicionar membro: ' + error.message);
+    } else {
+      alert('Membro adicionado com sucesso!');
+      closeModal();
+      showSection(memberData.group); // Atualiza a seção após adicionar membro
     }
-  </script>
+  }
+
+  async function showSection(section) {
+    document.getElementById('section-title').innerText = section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1');
+    
+    const { data: members, error } = await supabase
+      .from('members')
+      .select('*')
+      .eq('group', section);
+
+    if (error) {
+      document.getElementById('section-content').innerHTML = `<p>Erro ao carregar membros: ${error.message}</p>`;
+    } else {
+      const memberList = members.map(member => `<p>${member.name} - ${member.number}</p>`).join('');
+      document.getElementById('section-content').innerHTML = memberList || '<p>Nenhum membro encontrado</p>';
+    }
+  }
+
+  function openModal() {
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  document.getElementById('modal-form').addEventListener('submit', addMemberToDatabase);
+</script>
+
 </body>
 </html>
