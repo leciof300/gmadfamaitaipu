@@ -276,7 +276,7 @@
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">X</button>
       <h3 id="modal-title">Adicionar Novo Membro</h3>
-      <form id="modal-form">
+      <form id="modal-form" action="/add-member" method="POST">
         <label for="name">Nome:</label>
         <input type="text" id="name" name="name" required>
 
@@ -295,79 +295,31 @@
           <option value="ebd">EBD</option>
         </select>
 
-        <button type="submit">Salvar</button>
+        <button type="submit">Adicionar</button>
       </form>
     </div>
   </div>
 
   <script>
-    // Função para exibir seções e membros
     function showSection(section) {
-      const sections = ['membros', 'recemConvertidos', 'jovens', 'adolescentes', 'ebd'];
-      document.getElementById('section-title').textContent = section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1');
-      document.getElementById('table-container').innerHTML = ''; // Limpa a tabela
-
-      // Exibe a lista de membros apenas se o grupo selecionado tiver membros
-      displayMembers(section);
+      document.getElementById('section-title').innerText = section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1');
+      // Aqui você pode carregar o conteúdo correspondente à seção
     }
 
-    // Função para abrir o modal
     function openModal(title) {
-      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-title').innerText = title;
       document.getElementById('modal').style.display = 'flex';
     }
 
-    // Função para fechar o modal
     function closeModal() {
       document.getElementById('modal').style.display = 'none';
-      document.getElementById('modal-form').reset(); // Limpa o formulário
+      document.getElementById('modal-form').reset();
     }
 
-    // Salvando dados no LocalStorage
-    const form = document.getElementById('modal-form');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('name').value;
-      const number = document.getElementById('number').value;
-      const address = document.getElementById('address').value;
-      const group = document.getElementById('group').value;
-
-      const member = { name, number, address, group };
-      let members = JSON.parse(localStorage.getItem('members')) || [];
-      members.push(member);
-
-      localStorage.setItem('members', JSON.stringify(members));
-      closeModal();
-      displayMembers(group); // Atualiza a tabela de membros do grupo selecionado
-    });
-
-    // Exibindo membros por grupo
-    function displayMembers(group) {
-      let members = JSON.parse(localStorage.getItem('members')) || [];
-      const filteredMembers = members.filter(member => member.group === group);
-
-      if (filteredMembers.length > 0) {
-        const table = document.createElement('table');
-        table.classList.add('table');
-
-        const thead = table.createTHead();
-        const row = thead.insertRow();
-        row.insertCell(0).textContent = 'Nome';
-        row.insertCell(1).textContent = 'Número';
-        row.insertCell(2).textContent = 'Endereço';
-
-        const tbody = table.createTBody();
-        filteredMembers.forEach(member => {
-          const row = tbody.insertRow();
-          row.insertCell(0).textContent = member.name;
-          row.insertCell(1).textContent = member.number;
-          row.insertCell(2).textContent = member.address;
-        });
-
-        document.getElementById('table-container').appendChild(table);
-      } else {
-        document.getElementById('table-container').textContent = 'Nenhum membro cadastrado neste grupo.';
+    // Fechar o modal ao clicar fora dele
+    window.onclick = function(event) {
+      if (event.target === document.getElementById('modal')) {
+        closeModal();
       }
     }
   </script>
