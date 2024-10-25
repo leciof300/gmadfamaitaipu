@@ -1,42 +1,43 @@
 const express = require('express');
 const { Pool } = require('pg');
-const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = 3000;
 
-// Configuração do PostgreSQL
+// Configuração do Pool para conexão com o PostgreSQL
 const pool = new Pool({
-  connectionString: 'postgresql://postgres.bsvhnbqbhcgtlebroalb:[YOUR-PASSWORD]@aws-0-us-west-1.pooler.supabase.com:6543/postgres',
+  connectionString: 'postgres://postgres.bsvhnbqbhcgtlebroalb:[YOUR-PASSWORD]@aws-0-us-west-1.pooler.supabase.com:6543/postgres',
 });
 
-// Middleware
-app.use(cors());
+// Middleware para parsear JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Para interpretar dados do formulário
 
-// Rota para adicionar um novo membro
+// Rota para adicionar um membro
 app.post('/add-member', async (req, res) => {
   const { name, number, address, group } = req.body;
 
   try {
-    // Verifica se o membro já existe
-    const existingMember = await pool.query('SELECT * FROM members WHERE name = $1', [name]);
+    const result = await pool.query(
+      'INSERT INTO members(name, number, address, group) VALUES($1, $2, $3, $4) RETURNING *',
+      [name, number, address, group]
+    );
 
-    if (existingMember.rows.length > 0) {
-      return res.status(400).json({ error: 'Membro já existe.' });
-    }
-
-    // Adiciona o novo membro
-    await pool.query('INSERT INTO members (name, number, address, group) VALUES ($1, $2, $3, $4)', [name, number, address, group]);
-    res.status(201).json({ message: 'Membro adicionado com sucesso!' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro ao adicionar membro.' });
+    res.status(201).json({ message: 'Membro adicionado com sucesso!', member: result.rows[0] });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Erro ao adicionar membro: ' + error.message });
   }
 });
 
-// Iniciar o servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+// Configuração do HTTPS
+const options = {
+  key: fs.readFileSync('caminho/para/seu/certificado/key.pem'), // Altere para o caminho do seu certificado
+  cert: fs.readFileSync('caminho/para/seu/certificado/cert.pem'), // Altere para o caminho do seu certificado
+};
+
+// Iniciar o servidor HTTPS
+https.createServer(options, app).listen(port, () => {
+  console.log(`Servidor HTTPS rodando em https://localhost:${port}`);
 });
