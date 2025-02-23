@@ -3,179 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gerenciamento de membros de igreja com cadastro e categorias.">
   <title>Gerenciamento de Membros</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
   <style>
+    :root {
+      --background-color: #0d0d0d;
+      --primary-color: #1db954;
+      --text-color: #d4d4d4;
+      --card-background: #161616;
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+    }
     body {
-      background-color: #1e22ff;
-      color: white;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
-    header {
-      background-color: #1e1e2e;
-      color: white;
+    .header {
+      background: linear-gradient(135deg, #1a1a1a, #222);
+      width: 100%;
       padding: 20px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      box-shadow: 0 4px 10px rgba(0, 255, 0, 0.1);
     }
-
-    nav ul {
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+      justify-content: center;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .left-side, .right-side {
+      padding: 25px;
+      box-sizing: border-box;
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      box-shadow: 0 6px 12px rgba(0, 255, 0, 0.15);
+      transition: transform var(--transition-speed);
+    }
+    .left-side:hover, .right-side:hover {
+      transform: translateY(-5px);
+    }
+    .left-side {
+      width: 30%;
+      min-width: 280px;
+    }
+    .right-side {
+      width: 65%;
+      min-width: 350px;
+    }
+    h2, h3, label, a {
+      color: var(--primary-color);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 2px solid var(--primary-color);
+      border-radius: 8px;
+      background: var(--card-background);
+      color: var(--text-color);
+      font-size: 1rem;
+      transition: all var(--transition-speed);
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #17a947;
+      box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+    }
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #159742;
+      transform: scale(1.05);
+    }
+    ul {
       list-style: none;
       padding: 0;
-      margin: 0;
     }
-
-    nav ul li {
-      display: inline;
-      margin-right: 10px;
-    }
-
-    nav ul li a {
-      color: #2600fd;
+    ul li a {
       text-decoration: none;
-    }
-
-    main {
-      padding: 20px;
-    }
-
-    footer {
-      background-color: #1e1e2e;
-      color: white;
-      padding: 20px;
-      position: relative;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .footer-img {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      width: 50px;
-      height: auto;
-    }
-
-    .login-container {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: 20px auto;
-    }
-
-    .login-container h2 {
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
+      color: var(--primary-color);
       display: block;
-      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background var(--transition-speed);
     }
-
-    .form-group input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    ul li a:hover {
+      background: rgba(0, 255, 0, 0.2);
     }
-
-    button {
-      background-color: #0069fd;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background-color: #00abc2;
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .left-side, .right-side {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-
-<header>
-  <h1>Bem-vindo ao Gerenciamento de Membros</h1>
-  <nav>
-    <ul>
-      <li><a href="#">Login</a></li>
-    </ul>
-  </nav>
+<header class="header">
+  Gerenciamento de Membros
 </header>
-
-<main>
-  <section>
-    <h2>Ad Fama Itaipu</h2>
-    <p>Jesus Cristo é o único Senhor.</p>
-  </section>
-
-  <!-- Seção de Login -->
-  <section class="login-container">
-    <form id="login-form">
-      <h2>Login</h2>
+<div class="container">
+  <div class="left-side">
+    <h2>Tipos de Membros</h2>
+    <ul id="member-type-list">
+      <li>
+        <a href="#" id="toggle-members">Membros</a>
+        <ul id="member-groups" style="display: none;">
+          <li><a href="categoria.html?categoria=Membro%20de%20casa">Membro de casa</a></li>
+          <li><a href="categoria.html?categoria=Escola%20bíblica%20(EBD)">Escola bíblica (EBD)</a></li>
+          <li><a href="categoria.html?categoria=Jovem">Jovens</a></li>
+          <li><a href="categoria.html?categoria=Adolescente">Adolescentes</a></li>
+          <li><a href="categoria.html?categoria=Kids">Crianças</a></li>
+          <li><a href="categoria.html?categoria=Novo%20convertido">Novos convertidos</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="right-side">
+    <h2>Cadastro de Membros</h2>
+    <form id="member-form">
       <div class="form-group">
-        <label for="username">Usuário</label>
-        <input type="text" id="username" name="username" required>
+        <label for="name">Nome</label>
+        <input type="text" id="name" name="name" required placeholder="Digite o nome">
       </div>
       <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" name="password" required>
+        <label for="phone">Whatsapp</label>
+        <input type="text" id="phone" name="phone" required placeholder="Digite o número">
       </div>
-      <button type="submit">Login</button>
+      <div class="form-group">
+        <label for="address">Endereço</label>
+        <input type="text" id="address" name="address" required placeholder="Digite o endereço">
+      </div>
+      <div class="form-group">
+        <label for="type">Tipo de Membro</label>
+        <select id="type" name="type" required>
+          <option value="Novo convertido">Novo convertido</option>
+          <option value="Membro de casa">Membro de casa</option>
+          <option value="Jovem">Jovem</option>
+          <option value="Adolescente">Adolescente</option>
+          <option value="Kids">Kids</option>
+          <option value="Escola bíblica (EBD)">Escola bíblica (EBD)</option>
+        </select>
+      </div>
+      <button type="submit">Cadastrar</button>
     </form>
-  </section>
-</main>
-
-<footer>
-  <p>© 2024 Gerenciamento de Membros.</p>
-</footer>
-
-<script>
-  // Função de autenticação
-  const users = {
-    'Adm': 'Lecio123$',
-    'Pastor': '2024%',
-    'Lider': 'Jesus300#'
-  };
-
-  document.getElementById('login-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    
-    if (users[username] && users[username] === password) {
-      alert('Login bem-sucedido!');
-      window.location.href = 'gerenciamento.html';
-    } else {
-      alert('Usuário ou senha incorretos!');
-    }
-  });
-
-  // Registro do Service Worker para PWA
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('Service Worker registrado com sucesso:', registration);
-      })
-      .catch(error => {
-        console.log('Falha ao registrar o Service Worker:', error);
-      });
-  }
-</script>
-
+    <h3>Lista de Membros Cadastrados</h3>
+    <ul id="member-list"></ul>
+  </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
