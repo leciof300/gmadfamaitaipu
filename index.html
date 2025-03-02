@@ -46,13 +46,16 @@
       margin-left: 270px;
       padding: 40px;
       width: calc(100% - 270px);
-      display: flex;
-      gap: 30px;
     }
-    .content-left, .content-right {
-      flex: 1;
-      background: #161616;
+    .header {
+      font-size: 2rem;
+      color: #1db954;
+      text-align: center;
+    }
+    #members-list, #add-member {
+      margin-top: 20px;
       padding: 20px;
+      background: #161616;
       border-radius: 8px;
       box-shadow: 0 6px 12px rgba(0, 255, 0, 0.15);
     }
@@ -63,56 +66,67 @@
       border-radius: 6px;
       border-left: 5px solid #1db954;
     }
-    form input, select, button {
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      display: block;
+      color: #1db954;
+    }
+    .form-group input, .form-group select {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 8px;
       border-radius: 5px;
       border: none;
+      background: #222;
+      color: #d4d4d4;
     }
-    button {
+    .btn {
       background: #1db954;
-      color: #0d0d0d;
-      font-weight: bold;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-
-<!-- Sidebar -->
 <div class="sidebar">
   <h2>Tipos de Membros</h2>
-  <ul id="member-type-list">
-    <li>
-      <a href="#" id="toggle-members">Membros</a>
-      <ul id="member-groups" style="display: none;">
-        <li><a href="#" class="category" data-category="Membro de casa">Membro de casa</a></li>
-        <li><a href="#" class="category" data-category="Escola bíblica (EBD)">Escola bíblica (EBD)</a></li>
-        <li><a href="#" class="category" data-category="Jovem">Jovens</a></li>
-        <li><a href="#" class="category" data-category="Adolescente">Adolescentes</a></li>
-        <li><a href="#" class="category" data-category="Kids">Crianças</a></li>
-        <li><a href="#" class="category" data-category="Novo convertido">Novos convertidos</a></li>
-      </ul>
-    </li>
+  <ul>
+    <li><a href="#" class="category" data-category="Membro de casa">Membro de casa</a></li>
+    <li><a href="#" class="category" data-category="Escola bíblica (EBD)">Escola bíblica (EBD)</a></li>
+    <li><a href="#" class="category" data-category="Jovem">Jovens</a></li>
+    <li><a href="#" class="category" data-category="Adolescente">Adolescentes</a></li>
+    <li><a href="#" class="category" data-category="Kids">Crianças</a></li>
+    <li><a href="#" class="category" data-category="Novo convertido">Novos convertidos</a></li>
   </ul>
 </div>
-
-<!-- Conteúdo Principal -->
 <div class="main-content">
-  <div class="content-left">
-    <h3>Membros da Categoria: <span id="selected-category">Selecione uma categoria</span></h3>
-    <div id="members-container"></div>
-  </div>
-  <div class="content-right">
-    <h3>Adicionar Membro</h3>
-    <form id="add-member-form">
-      <input type="text" id="name" placeholder="Nome" required>
-      <input type="text" id="whatsapp" placeholder="WhatsApp" required>
-      <input type="date" id="dob" required>
-      <input type="text" id="address" placeholder="Endereço" required>
-      <select id="group" required>
-        <option value="">Selecione um grupo</option>
+  <header class="header">Gerenciamento de Membros</header>
+  <div id="add-member">
+    <h3>Adicionar Novo Membro</h3>
+    <div class="form-group">
+      <label>Nome:</label>
+      <input type="text" id="nome">
+    </div>
+    <div class="form-group">
+      <label>WhatsApp:</label>
+      <input type="text" id="whatsapp">
+    </div>
+    <div class="form-group">
+      <label>Data de Nascimento:</label>
+      <input type="date" id="nascimento">
+    </div>
+    <div class="form-group">
+      <label>Endereço:</label>
+      <input type="text" id="endereco">
+    </div>
+    <div class="form-group">
+      <label>Grupo:</label>
+      <select id="grupo">
         <option value="Membro de casa">Membro de casa</option>
         <option value="Escola bíblica (EBD)">Escola bíblica (EBD)</option>
         <option value="Jovem">Jovens</option>
@@ -120,57 +134,52 @@
         <option value="Kids">Crianças</option>
         <option value="Novo convertido">Novos convertidos</option>
       </select>
-      <button type="submit">Adicionar Membro</button>
-    </form>
+    </div>
+    <button class="btn" onclick="adicionarMembro()">Adicionar</button>
+  </div>
+  <div id="members-list">
+    <h3>Membros da Categoria: <span id="selected-category">Selecione uma categoria</span></h3>
+    <div id="members-container"></div>
   </div>
 </div>
-
 <script>
-  const membros = [];
-
-  document.getElementById("toggle-members").addEventListener("click", function(event) {
-    event.preventDefault();
-    let groupList = document.getElementById("member-groups");
-    groupList.style.display = groupList.style.display === "none" ? "block" : "none";
-  });
-
+  const membros = JSON.parse(localStorage.getItem("membros")) || [];
+  
+  function adicionarMembro() {
+    const nome = document.getElementById("nome").value;
+    const whatsapp = document.getElementById("whatsapp").value;
+    const nascimento = document.getElementById("nascimento").value;
+    const endereco = document.getElementById("endereco").value;
+    const grupo = document.getElementById("grupo").value;
+    
+    if (!nome || !whatsapp || !nascimento || !endereco) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+    
+    membros.push({ nome, whatsapp, nascimento, endereco, categoria: grupo });
+    localStorage.setItem("membros", JSON.stringify(membros));
+    alert("Membro adicionado com sucesso!");
+    document.getElementById("add-member").reset();
+  }
+  
   function filtrarMembros(categoria) {
     document.getElementById("selected-category").textContent = categoria;
     const container = document.getElementById("members-container");
     container.innerHTML = "";
-    const membrosFiltrados = membros.filter(m => m.categoria === categoria);
-
-    if (membrosFiltrados.length === 0) {
-      container.innerHTML = "<p>Nenhum membro encontrado.</p>";
-      return;
-    }
-
-    membrosFiltrados.forEach(membro => {
+    const filtrados = membros.filter(m => m.categoria === categoria);
+    filtrados.forEach(membro => {
       const div = document.createElement("div");
       div.classList.add("member-card");
       div.innerHTML = `<strong>${membro.nome}</strong> - ${membro.whatsapp}`;
       container.appendChild(div);
     });
   }
-
   document.querySelectorAll(".category").forEach(item => {
     item.addEventListener("click", function(event) {
       event.preventDefault();
       filtrarMembros(this.dataset.category);
     });
-  });
-
-  document.getElementById("add-member-form").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const nome = document.getElementById("name").value;
-    const whatsapp = document.getElementById("whatsapp").value;
-    const dob = document.getElementById("dob").value;
-    const endereco = document.getElementById("address").value;
-    const categoria = document.getElementById("group").value;
-
-    membros.push({ nome, whatsapp, dob, endereco, categoria });
-    alert("Membro adicionado com sucesso!");
-    this.reset();
   });
 </script>
 </body>
