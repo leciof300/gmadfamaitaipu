@@ -3,198 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gerenciamento de membros de igreja com cadastro e categorias.">
   <title>Gerenciamento de Membros</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
-    :root {
-      --background-color: #0d0d0d;
-      --primary-color: #1db954;
-      --text-color: #d4d4d4;
-      --card-background: #161616;
-      --border-radius: 12px;
-      --transition-speed: 0.3s;
-    }
     body {
-      background-color: var(--background-color);
-      color: var(--text-color);
       font-family: 'Inter', sans-serif;
+      background: #0d0d0d;
+      color: #d4d4d4;
       margin: 0;
-      padding: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-    .header {
-      background: linear-gradient(135deg, #1a1a1a, #222);
-      width: 100%;
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #161616;
       padding: 20px;
+      position: fixed;
+      left: 0;
+      overflow-y: auto;
+      box-shadow: 2px 0 10px rgba(0, 255, 0, 0.1);
+    }
+    .sidebar h2 {
       text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--primary-color);
-      box-shadow: 0 4px 10px rgba(0, 255, 0, 0.1);
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-      gap: 20px;
-      justify-content: center;
-      max-width: 1200px;
-      width: 100%;
-    }
-    .left-side, .right-side {
-      padding: 25px;
-      box-sizing: border-box;
-      background: var(--card-background);
-      border-radius: var(--border-radius);
-      box-shadow: 0 6px 12px rgba(0, 255, 0, 0.15);
-      transition: transform var(--transition-speed);
-    }
-    .left-side:hover, .right-side:hover {
-      transform: translateY(-5px);
-    }
-    .left-side {
-      width: 30%;
-      min-width: 280px;
-    }
-    .right-side {
-      width: 65%;
-      min-width: 350px;
-    }
-    h2, h3, label, a {
-      color: var(--primary-color);
-    }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border: 2px solid var(--primary-color);
-      border-radius: 8px;
-      background: var(--card-background);
-      color: var(--text-color);
-      font-size: 1rem;
-      transition: all var(--transition-speed);
-    }
-    input:focus, select:focus {
-      outline: none;
-      border-color: #17a947;
-      box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
-    }
-    button {
-      background: var(--primary-color);
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #159742;
-      transform: scale(1.05);
+      color: #1db954;
     }
     ul {
       list-style: none;
       padding: 0;
     }
     ul li a {
-      text-decoration: none;
-      color: var(--primary-color);
       display: block;
       padding: 10px;
-      border-radius: 6px;
-      transition: background var(--transition-speed);
+      color: #1db954;
+      text-decoration: none;
+      transition: 0.3s;
     }
     ul li a:hover {
       background: rgba(0, 255, 0, 0.2);
     }
-
-    /* Media Queries */
-    @media (max-width: 1024px) {
-      .left-side {
-        width: 40%;
-      }
-      .right-side {
-        width: 55%;
-      }
+    .main-content {
+      margin-left: 270px;
+      padding: 40px;
+      width: calc(100% - 270px);
+      display: flex;
+      gap: 30px;
     }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-      .left-side, .right-side {
-        width: 100%;
-      }
-      .header {
-        font-size: 1.5rem;
-      }
+    .content-left, .content-right {
+      flex: 1;
+      background: #161616;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0, 255, 0, 0.15);
     }
-
-    @media (max-width: 480px) {
-      .header {
-        font-size: 1.2rem;
-        padding: 15px;
-      }
-      input, select, button {
-        font-size: 0.9rem;
-        padding: 10px;
-      }
+    .member-card {
+      background: #222;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border-left: 5px solid #1db954;
+    }
+    form input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #1db954;
+      color: #0d0d0d;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-<header class="header">
-  Gerenciamento de Membros
-</header>
-<div class="container">
-  <div class="left-side">
-    <h2>Tipos de Membros</h2>
-    <ul id="member-type-list">
-      <li>
-        <a href="#" id="toggle-members">Membros</a>
-        <ul id="member-groups" style="display: none;">
-          <li><a href="categoria.html?categoria=Membro%20de%20casa">Membro de casa</a></li>
-          <li><a href="categoria.html?categoria=Escola%20bíblica%20(EBD)">Escola bíblica (EBD)</a></li>
-          <li><a href="categoria.html?categoria=Jovem">Jovens</a></li>
-          <li><a href="categoria.html?categoria=Adolescente">Adolescentes</a></li>
-          <li><a href="categoria.html?categoria=Kids">Crianças</a></li>
-          <li><a href="categoria.html?categoria=Novo%20convertido">Novos convertidos</a></li>
-        </ul>
-      </li>
-    </ul>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Tipos de Membros</h2>
+  <ul id="member-type-list">
+    <li>
+      <a href="#" id="toggle-members">Membros</a>
+      <ul id="member-groups" style="display: none;">
+        <li><a href="#" class="category" data-category="Membro de casa">Membro de casa</a></li>
+        <li><a href="#" class="category" data-category="Escola bíblica (EBD)">Escola bíblica (EBD)</a></li>
+        <li><a href="#" class="category" data-category="Jovem">Jovens</a></li>
+        <li><a href="#" class="category" data-category="Adolescente">Adolescentes</a></li>
+        <li><a href="#" class="category" data-category="Kids">Crianças</a></li>
+        <li><a href="#" class="category" data-category="Novo convertido">Novos convertidos</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<!-- Conteúdo Principal -->
+<div class="main-content">
+  <div class="content-left">
+    <h3>Membros da Categoria: <span id="selected-category">Selecione uma categoria</span></h3>
+    <div id="members-container"></div>
   </div>
-  <div class="right-side">
-    <h2>Cadastro de Membros</h2>
-    <form id="member-form">
-      <div class="form-group">
-        <label for="name">Nome</label>
-        <input type="text" id="name" name="name" required placeholder="Digite o nome">
-      </div>
-      <div class="form-group">
-        <label for="phone">Whatsapp</label>
-        <input type="text" id="phone" name="phone" required placeholder="Digite o número">
-      </div>
-      <div class="form-group">
-        <label for="address">Endereço</label>
-        <input type="text" id="address" name="address" required placeholder="Digite o endereço">
-      </div>
-      <div class="form-group">
-        <label for="type">Tipo de Membro</label>
-        <select id="type" name="type" required>
-          <option value="Novo convertido">Novo convertido</option>
-          <option value="Membro de casa">Membro de casa</option>
-          <option value="Jovem">Jovem</option>
-          <option value="Adolescente">Adolescente</option>
-          <option value="Kids">Kids</option>
-          <option value="Escola bíblica (EBD)">Escola bíblica (EBD)</option>
-        </select>
-      </div>
-      <button type="submit">Cadastrar</button>
+  <div class="content-right">
+    <h3>Adicionar Membro</h3>
+    <form id="add-member-form">
+      <input type="text" id="name" placeholder="Nome" required>
+      <input type="text" id="whatsapp" placeholder="WhatsApp" required>
+      <input type="date" id="dob" required>
+      <input type="text" id="address" placeholder="Endereço" required>
+      <select id="group" required>
+        <option value="">Selecione um grupo</option>
+        <option value="Membro de casa">Membro de casa</option>
+        <option value="Escola bíblica (EBD)">Escola bíblica (EBD)</option>
+        <option value="Jovem">Jovens</option>
+        <option value="Adolescente">Adolescentes</option>
+        <option value="Kids">Crianças</option>
+        <option value="Novo convertido">Novos convertidos</option>
+      </select>
+      <button type="submit">Adicionar Membro</button>
     </form>
-    <h3>Lista de Membros Cadastrados</h3>
-    <ul id="member-list"></ul>
   </div>
 </div>
-<script src="server.js"></script>
+
+<script>
+  const membros = [];
+
+  document.getElementById("toggle-members").addEventListener("click", function(event) {
+    event.preventDefault();
+    let groupList = document.getElementById("member-groups");
+    groupList.style.display = groupList.style.display === "none" ? "block" : "none";
+  });
+
+  function filtrarMembros(categoria) {
+    document.getElementById("selected-category").textContent = categoria;
+    const container = document.getElementById("members-container");
+    container.innerHTML = "";
+    const membrosFiltrados = membros.filter(m => m.categoria === categoria);
+
+    if (membrosFiltrados.length === 0) {
+      container.innerHTML = "<p>Nenhum membro encontrado.</p>";
+      return;
+    }
+
+    membrosFiltrados.forEach(membro => {
+      const div = document.createElement("div");
+      div.classList.add("member-card");
+      div.innerHTML = `<strong>${membro.nome}</strong> - ${membro.whatsapp}`;
+      container.appendChild(div);
+    });
+  }
+
+  document.querySelectorAll(".category").forEach(item => {
+    item.addEventListener("click", function(event) {
+      event.preventDefault();
+      filtrarMembros(this.dataset.category);
+    });
+  });
+
+  document.getElementById("add-member-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const nome = document.getElementById("name").value;
+    const whatsapp = document.getElementById("whatsapp").value;
+    const dob = document.getElementById("dob").value;
+    const endereco = document.getElementById("address").value;
+    const categoria = document.getElementById("group").value;
+
+    membros.push({ nome, whatsapp, dob, endereco, categoria });
+    alert("Membro adicionado com sucesso!");
+    this.reset();
+  });
+</script>
 </body>
 </html>
