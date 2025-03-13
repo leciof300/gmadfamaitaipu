@@ -13,6 +13,7 @@
       color: #d4d4d4;
       margin: 0;
       display: flex;
+      flex-direction: column;
     }
     .sidebar {
       width: 250px;
@@ -21,8 +22,10 @@
       padding: 20px;
       position: fixed;
       left: 0;
+      top: 0;
       overflow-y: auto;
       box-shadow: 2px 0 10px rgba(0, 255, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
     }
     .sidebar h2 {
       text-align: center;
@@ -46,6 +49,7 @@
       margin-left: 270px;
       padding: 40px;
       width: calc(100% - 270px);
+      transition: margin-left 0.3s ease-in-out;
     }
     .header {
       font-size: 2rem;
@@ -89,10 +93,38 @@
       border-radius: 5px;
       cursor: pointer;
       width: 100%;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #17a34a;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      .menu-toggle {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        background: #1db954;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1001;
+      }
     }
   </style>
 </head>
 <body>
+<button class="menu-toggle" onclick="toggleMenu()">☰</button>
 <div class="sidebar">
   <h2>Tipos de Membros</h2>
   <ul>
@@ -116,25 +148,6 @@
       <label>WhatsApp:</label>
       <input type="text" id="whatsapp">
     </div>
-    <div class="form-group">
-      <label>Data de Nascimento:</label>
-      <input type="date" id="nascimento">
-    </div>
-    <div class="form-group">
-      <label>Endereço:</label>
-      <input type="text" id="endereco">
-    </div>
-    <div class="form-group">
-      <label>Grupo:</label>
-      <select id="grupo">
-        <option value="Membro de casa">Membro de casa</option>
-        <option value="Escola bíblica (EBD)">Escola bíblica (EBD)</option>
-        <option value="Jovem">Jovens</option>
-        <option value="Adolescente">Adolescentes</option>
-        <option value="Kids">Crianças</option>
-        <option value="Novo convertido">Novos convertidos</option>
-      </select>
-    </div>
     <button class="btn" onclick="adicionarMembro()">Adicionar</button>
   </div>
   <div id="members-list">
@@ -143,44 +156,9 @@
   </div>
 </div>
 <script>
-  const membros = JSON.parse(localStorage.getItem("membros")) || [];
-  
-  function adicionarMembro() {
-    const nome = document.getElementById("nome").value;
-    const whatsapp = document.getElementById("whatsapp").value;
-    const nascimento = document.getElementById("nascimento").value;
-    const endereco = document.getElementById("endereco").value;
-    const grupo = document.getElementById("grupo").value;
-    
-    if (!nome || !whatsapp || !nascimento || !endereco) {
-      alert("Preencha todos os campos!");
-      return;
-    }
-    
-    membros.push({ nome, whatsapp, nascimento, endereco, categoria: grupo });
-    localStorage.setItem("membros", JSON.stringify(membros));
-    alert("Membro adicionado com sucesso!");
-    document.getElementById("add-member").reset();
+  function toggleMenu() {
+    document.querySelector(".sidebar").classList.toggle("active");
   }
-  
-  function filtrarMembros(categoria) {
-    document.getElementById("selected-category").textContent = categoria;
-    const container = document.getElementById("members-container");
-    container.innerHTML = "";
-    const filtrados = membros.filter(m => m.categoria === categoria);
-    filtrados.forEach(membro => {
-      const div = document.createElement("div");
-      div.classList.add("member-card");
-      div.innerHTML = `<strong>${membro.nome}</strong> - ${membro.whatsapp}`;
-      container.appendChild(div);
-    });
-  }
-  document.querySelectorAll(".category").forEach(item => {
-    item.addEventListener("click", function(event) {
-      event.preventDefault();
-      filtrarMembros(this.dataset.category);
-    });
-  });
 </script>
 </body>
 </html>
